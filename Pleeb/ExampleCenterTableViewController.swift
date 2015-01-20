@@ -19,6 +19,8 @@
 // THE SOFTWARE.
 
 import UIKit
+import MapKit
+import CoreLocation
 
 enum CenterViewControllerSection: Int {
     case LeftViewState
@@ -27,8 +29,10 @@ enum CenterViewControllerSection: Int {
     case RightDrawerAnimation
 }
 
-class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSource, UITableViewDelegate {
+class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     var tableView: UITableView!
+    var mapView: MKMapView!
+    var manager:CLLocationManager!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -45,11 +49,23 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView = UITableView(frame: self.view.bounds, style: .Grouped)
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.view.addSubview(self.tableView)
-        self.tableView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        // INITILIZE LOCATION MANAGER
+        
+        manager = CLLocationManager()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+
+        
+        // INITIALIZE MAPVIEW
+        
+        mapView = MKMapView(frame: super.view.bounds)
+        mapView.delegate = self
+        mapView.showsUserLocation = true
+        view.addSubview(self.mapView)
+        mapView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        
         
         let doubleTap = UITapGestureRecognizer(target: self, action: "doubleTap:")
         doubleTap.numberOfTapsRequired = 2
@@ -70,7 +86,7 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         
         let backView = UIView()
         backView.backgroundColor = UIColor(red: 208/255, green: 208/255, blue: 208/255, alpha: 1.0)
-        self.tableView.backgroundView = backView
+        //self.tableView.backgroundView = backView
     }
     
     override func viewWillAppear(animated: Bool) {

@@ -20,5 +20,9 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>So users can find themselves on a map</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The map requires location to find events</string>
 </dict>
 </plist>
