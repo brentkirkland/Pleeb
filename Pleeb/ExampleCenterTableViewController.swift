@@ -34,6 +34,10 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
     var mapView: MKMapView!
     var manager:CLLocationManager!
     
+    //the following variables help make the map load on the location more easily
+    var intialLocationLoad = false
+    var coordinatesDidAlign = false
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
@@ -62,6 +66,7 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         
         mapView = MKMapView(frame: super.view.bounds)
         mapView.delegate = self
+        //show user location on map
         mapView.showsUserLocation = true
         view.addSubview(self.mapView)
         mapView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
@@ -87,6 +92,111 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         let backView = UIView()
         backView.backgroundColor = UIColor(red: 208/255, green: 208/255, blue: 208/255, alpha: 1.0)
         //self.tableView.backgroundView = backView
+    }
+    
+    func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {
+        
+        if intialLocationLoad == false{
+            
+            currentLocation()
+
+            //TODO: Make it so when you go so far it atomatically reloads
+            intialLocationLoad = true
+        }
+        
+    }
+    
+    func currentLocation() -> Void {
+        let spanX = 0.01
+        let spanY = 0.01
+        
+        var newRegion = MKCoordinateRegion(center: mapView.userLocation.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
+        mapView.setRegion(newRegion, animated: true)
+        mapView.removeAnnotations(mapView.annotations)
+        requestUpdate()
+    }
+    
+    func requestUpdate(){
+        
+        var region: MKCoordinateRegion = mapView.region
+        var center: CLLocationCoordinate2D = mapView.region.center
+        
+        var userCenter = mapView.userLocation.coordinate
+        
+        if Int(region.center.latitude) == Int(userCenter.latitude) && Int(region.center.longitude) == Int(userCenter.longitude){
+            coordinatesDidAlign = true
+        }
+        
+        if coordinatesDidAlign {
+            var lat = region.span.latitudeDelta
+            var lon = region.span.longitudeDelta
+            
+            var location1 = (center.latitude - (lat))
+            var location2 = (center.latitude + (lat))
+            var location3 = (center.longitude - (lon))
+            var location4 = (center.longitude + (lon))
+            
+            
+//            var newCoords = "?x1=\(location3)&x2=\(location4)&y1=\(location1)&y2=\(location2)"
+            
+            //var myJSON: SwiftyJSON.JSON?
+            
+//            Alamofire.request(.GET, "http://198.199.118.177:9000/api/ratings\(newCoords)")
+//                .responseJSON { (req, res, json, error) in
+//                    if(error != nil) {
+//                        NSLog("Error: \(error)")
+//                        println(req)
+//                        println(res)
+//                    }
+//                    else {
+//                        NSLog("Success: http://198.199.118.177:9000/api/ratings\(newCoords)")
+//                        //print(json)
+//                        var myJSON = JSON(json!)
+//                        //json["coordinates"]
+//                        var x = 0
+//                        var count = myJSON.count
+//                        
+//                        
+//                        while x < count {
+//                            
+//                            let realm = RLMRealm.defaultRealm()
+//                            realm.beginWriteTransaction()
+//                            let newVote = Vote()
+//                            newVote.longitude = myJSON[x]["loc"]["coordinates"][0].double!
+//                            newVote.latitude =  myJSON[x]["loc"]["coordinates"][1].double!
+//                            newVote.value = myJSON[x]["up"].bool!
+//                            realm.addObject(newVote)
+//                            realm.commitWriteTransaction()
+            
+                            
+                            
+                            //                            var lon = myJSON[x]["loc"]["coordinates"][0].double
+                            //                            var lat = myJSON[x]["loc"]["coordinates"][1].double
+                            //                            var vote = myJSON[x]["up"]
+                            
+                            //                            print(vote)
+                            //                            if vote == false {
+                            //                                self.circle = "redCircle.png"
+                            //                            }else {
+                            //                                self.circle = "blueCircle.png"
+                            //                            }
+                            
+                            //                            var clon: CLLocationDegrees = lon!
+                            //                            var clat: CLLocationDegrees = lat!
+                            
+                            //                            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(clat, clon)
+                            
+                            //                            var myHomePin = MKPointAnnotation()
+                            //                            myHomePin.coordinate = location
+                            //                            self.myMap.addAnnotation(myHomePin)
+                            
+//                            x++
+//                        }
+            
+//                    }
+//            }
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
