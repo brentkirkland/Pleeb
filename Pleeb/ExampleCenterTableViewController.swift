@@ -21,6 +21,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
 
 enum CenterViewControllerSection: Int {
     case LeftViewState
@@ -72,6 +73,22 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         mapView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         
         
+        // CREATE BUMP BUTTON AND LOAD TO SCREEN
+        
+        let button   = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        button.frame = CGRectMake((view.frame.width/2-(view.frame.width/2)/2), (view.frame.height - 50), (view.frame.width/2), 50)
+        button.backgroundColor = UIColor.whiteColor()
+        button.setTitle("^", forState: UIControlState.Normal)
+        button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        self.view.addSubview(button)
+        
+        //REQUEST POINTS 
+        //TODO REQUEST REALM AND CHECK WITH UPDATES
+        
+        requestUpdate()
+        
+        
         let doubleTap = UITapGestureRecognizer(target: self, action: "doubleTap:")
         doubleTap.numberOfTapsRequired = 2
         self.view.addGestureRecognizer(doubleTap)
@@ -94,6 +111,38 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         //self.tableView.backgroundView = backView
     }
     
+    //button action
+    
+    func buttonAction(sender:UIButton!)
+    {
+        post()
+    }
+    
+    //POST
+    
+    func post()->Void {
+        
+        let parameters = [
+            "owner": "Cop",
+            "up": true,
+            "loc": [
+                "type": "Point",
+                "coordinates": [
+                    mapView.userLocation.coordinate.longitude,
+                    mapView.userLocation.coordinate.latitude
+                ]
+            ]
+        ]
+        
+        print(parameters)
+        
+        Alamofire.request(.POST, "http://198.199.118.177:9000/api/ratings", parameters: parameters, encoding: .JSON)
+        
+        mapView.removeAnnotations(mapView.annotations)
+        requestUpdate()
+        
+    }
+    
     func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {
         
         if intialLocationLoad == false{
@@ -106,6 +155,7 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         
     }
     
+    //function that ask for currentLocation and loads the map at user location
     func currentLocation() -> Void {
         let spanX = 0.01
         let spanY = 0.01
@@ -116,6 +166,8 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         requestUpdate()
     }
     
+    
+    //Function that request for annotation updates
     func requestUpdate(){
         
         var region: MKCoordinateRegion = mapView.region
@@ -127,7 +179,10 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
             coordinatesDidAlign = true
         }
         
+        //grab the area around annotations from the server arround the map
+        
         if coordinatesDidAlign {
+            
             var lat = region.span.latitudeDelta
             var lon = region.span.longitudeDelta
             
@@ -137,64 +192,46 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
             var location4 = (center.longitude + (lon))
             
             
-//            var newCoords = "?x1=\(location3)&x2=\(location4)&y1=\(location1)&y2=\(location2)"
+            var newCoords = "?x1=\(location3)&x2=\(location4)&y1=\(location1)&y2=\(location2)"
             
-            //var myJSON: SwiftyJSON.JSON?
-            
-//            Alamofire.request(.GET, "http://198.199.118.177:9000/api/ratings\(newCoords)")
-//                .responseJSON { (req, res, json, error) in
-//                    if(error != nil) {
-//                        NSLog("Error: \(error)")
-//                        println(req)
-//                        println(res)
-//                    }
-//                    else {
-//                        NSLog("Success: http://198.199.118.177:9000/api/ratings\(newCoords)")
-//                        //print(json)
-//                        var myJSON = JSON(json!)
-//                        //json["coordinates"]
-//                        var x = 0
-//                        var count = myJSON.count
-//                        
-//                        
-//                        while x < count {
-//                            
-//                            let realm = RLMRealm.defaultRealm()
-//                            realm.beginWriteTransaction()
-//                            let newVote = Vote()
-//                            newVote.longitude = myJSON[x]["loc"]["coordinates"][0].double!
-//                            newVote.latitude =  myJSON[x]["loc"]["coordinates"][1].double!
-//                            newVote.value = myJSON[x]["up"].bool!
-//                            realm.addObject(newVote)
-//                            realm.commitWriteTransaction()
-            
+            Alamofire.request(.GET, "http://198.199.118.177:9000/api/ratings\(newCoords)")
+                .responseJSON { (req, res, json, error) in
+                    if(error != nil) {
+                        NSLog("Error: \(error)")
+                        println(req)
+                        println(res)
+                    }
+                    else {
+                        NSLog("Success: http://198.199.118.177:9000/api/ratings\(newCoords)")
+                        //print(json)
+                        var myJSON = JSON(json!)
+                        //json["coordinates"]
+                        var x = 0
+                        var count = myJSON.count
+                        
+                        
+                        while x < count {
                             
+                            var lon = myJSON[x]["loc"]["coordinates"][0].double
+                            var lat = myJSON[x]["loc"]["coordinates"][1].double
+                            var vote = myJSON[x]["up"]
                             
-                            //                            var lon = myJSON[x]["loc"]["coordinates"][0].double
-                            //                            var lat = myJSON[x]["loc"]["coordinates"][1].double
-                            //                            var vote = myJSON[x]["up"]
+                            print(vote)
                             
-                            //                            print(vote)
-                            //                            if vote == false {
-                            //                                self.circle = "redCircle.png"
-                            //                            }else {
-                            //                                self.circle = "blueCircle.png"
-                            //                            }
+                            var clon: CLLocationDegrees = lon!
+                            var clat: CLLocationDegrees = lat!
                             
-                            //                            var clon: CLLocationDegrees = lon!
-                            //                            var clat: CLLocationDegrees = lat!
+                            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(clat, clon)
                             
-                            //                            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(clat, clon)
+                            var myHomePin = MKPointAnnotation()
+                            myHomePin.coordinate = location
+                            self.mapView.addAnnotation(myHomePin)
                             
-                            //                            var myHomePin = MKPointAnnotation()
-                            //                            myHomePin.coordinate = location
-                            //                            self.myMap.addAnnotation(myHomePin)
+                            x++
                             
-//                            x++
-//                        }
-            
-//                    }
-//            }
+                        }
+                    }
+            }
         }
         
     }
@@ -417,4 +454,14 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
     func twoFingerDoubleTap(gesture: UITapGestureRecognizer) {
         self.evo_drawerController?.bouncePreviewForDrawerSide(.Right, completion: nil)
     }
+    
+    //HELPS WITH MEMORY OF THE MAP
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+        mapView.mapType = MKMapType.Standard
+        mapView.removeFromSuperview()
+        mapView = nil
+    }
+
 }
