@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var drawerController: DrawerController!
     
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+        
+        
         let leftSideDrawerViewController = ExampleLeftSideDrawerViewController()
         let centerViewController = ExampleCenterTableViewController()
         let rightSideDrawerViewController = ExampleRightSideDrawerViewController()
@@ -65,6 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.window.backgroundColor = UIColor.whiteColor()
         self.window.makeKeyAndVisible()
+
         
         return true
     }
