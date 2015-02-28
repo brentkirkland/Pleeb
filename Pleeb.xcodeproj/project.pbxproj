@@ -29,7 +29,6 @@
 		C77F56FB1A6E0A9F006FE714 /* CenterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77F56FA1A6E0A9F006FE714 /* CenterTableViewCell.swift */; };
 		C77F56FD1A6E0AAF006FE714 /* SideDrawerSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77F56FC1A6E0AAF006FE714 /* SideDrawerSectionHeaderView.swift */; };
 		C7ACFF2E1A85AE5200CA83F0 /* pleebbuttonbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7ACFF2D1A85AE5200CA83F0 /* pleebbuttonbutton@2x.png */; };
-		C7ACFF321A90072600CA83F0 /* SignUpBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7ACFF311A90072600CA83F0 /* SignUpBoard.storyboard */; };
 		C7BB5D471A74926400234955 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB5D461A74926400234955 /* AnimationView.swift */; };
 		C7BB5EF61A77807200234955 /* Comp 4_00000.png in Resources */ = {isa = PBXBuildFile; fileRef = C7BB5E421A77807200234955 /* Comp 4_00000.png */; };
 		C7BB5EF71A77807200234955 /* Comp 4_00000@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7BB5E431A77807200234955 /* Comp 4_00000@2x.png */; };
@@ -301,7 +300,6 @@
 		C77F56FC1A6E0AAF006FE714 /* SideDrawerSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideDrawerSectionHeaderView.swift; sourceTree = "<group>"; };
 		C77F56FF1A6E1D07006FE714 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = ../Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		C7ACFF2D1A85AE5200CA83F0 /* pleebbuttonbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pleebbuttonbutton@2x.png"; path = "../pleebbuttonbutton@2x.png"; sourceTree = "<group>"; };
-		C7ACFF311A90072600CA83F0 /* SignUpBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignUpBoard.storyboard; sourceTree = "<group>"; };
 		C7BB5D461A74926400234955 /* AnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		C7BB5E421A77807200234955 /* Comp 4_00000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Comp 4_00000.png"; sourceTree = "<group>"; };
 		C7BB5E431A77807200234955 /* Comp 4_00000@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Comp 4_00000@2x.png"; sourceTree = "<group>"; };
@@ -569,7 +567,6 @@
 				C77F56E81A6E0990006FE714 /* ExampleDrawerVisualStateManager.swift */,
 				C77F56EC1A6E09D0006FE714 /* ExampleViewController.swift */,
 				C77F56EE1A6E0A22006FE714 /* ExampleCenterTableViewController.swift */,
-				C7ACFF311A90072600CA83F0 /* SignUpBoard.storyboard */,
 				C7BB5D461A74926400234955 /* AnimationView.swift */,
 				C7FF9F491A7F0EF70025E031 /* Model.swift */,
 				C77F56F01A6E0A3C006FE714 /* ExampleSideDrawerViewController.swift */,
@@ -1050,7 +1047,6 @@
 				C7BB5F171A77807200234955 /* Comp 4_00016@2x.png in Resources */,
 				C7BB5F951A77807200234955 /* Comp 4_00079@2x.png in Resources */,
 				C7BB5F011A77807200234955 /* Comp 4_00005@2x.png in Resources */,
-				C7ACFF321A90072600CA83F0 /* SignUpBoard.storyboard in Resources */,
 				C7BB5F3C1A77807200234955 /* Comp 4_00035.png in Resources */,
 				C7BB5F701A77807200234955 /* Comp 4_00061.png in Resources */,
 				C7BB5F6E1A77807200234955 /* Comp 4_00060.png in Resources */,
